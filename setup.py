@@ -23,9 +23,8 @@ setup(
       zip_safe=True,
       install_requires=[
         'requests',
-		'pyOpenSSL',
-		'ndg-httpsclient',
-		'flask'
+        'pyOpenSSL',
+        'ndg-httpsclient',
+        'flask'
       ],
 )
-
