@@ -1,6 +1,7 @@
 #-*- encoding: UTF-8 -*-
-
-from flask import Flask, session, request, redirect, jsonify
+import csv
+import sqlite3
+from flask import Flask, session, request, redirect, jsonify, g
 
 # Our oauth
 from oauth import Oauth
@@ -11,6 +12,9 @@ NCTU_APP_CLIENT_SECRET = 'dV2NgLReGwmKyfBIGajbVAZCAr7puGyudu1ZianSaIMV441Lo4udlP
 
 app = Flask(__name__)
 app.secret_key = 'your super coll secrey key'
+SQLITE_DB_PATH = 'songs.db'
+SQLITE_DB_SCHEMA = 'create_db.sql'
+MEMBER_CSV_PATH = 'songs.csv'
 
 # make a oauth init
 nctu = Oauth(
@@ -33,6 +37,33 @@ def login():
     # redirect to nctu auth dialog
     return nctu.authorize()
 
+@app.route('/vote')
+def vote():
+    # 先測 token
+    # ...
+    # 再測一下 id
+    songID = request.args.get('songid')
+    memberID = request.args.get('memberid')
+
+    db = get_db()
+
+    voting_result = db.execute(
+        'SELECT memberid, songid FROM voting_record WHERE memberid = ?',
+        (memberID, )
+    ).fetchone()
+
+    if voting_result is None:
+        vote = db.execute(
+            'INSERT INTO  voting_record (memberid, songid) VALUES (?, ?)',
+            (memberID, songID)
+        )
+        print('create new voting record', voting_result)
+    else:
+        print('you already vote: song', voting_result)
+
+    # return redirect('/')
+    return redirect('/')
+
 @app.route('/auth')
 def auth():
     # user code for getting token
@@ -47,6 +78,23 @@ def auth():
 
     return redirect('/login')
 
+# SQLite3-related operations
+# See SQLite3 usage pattern from Flask official doc
+# http://flask.pocoo.org/docs/0.10/patterns/sqlite3/
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(SQLITE_DB_PATH, isolation_level=None)
+        # Enable foreign key check
+        db.execute("PRAGMA foreign_keys = ON")
+    return db
+
+
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
 
 if __name__ == "__main__":
     app.run(debug=1)
