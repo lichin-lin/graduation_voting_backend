@@ -2,8 +2,10 @@
 import csv
 import sqlite3
 from flask import Flask, session, request, redirect, jsonify, g
-from flask_jwt import JWT, jwt_required, current_identity
-from werkzeug.security import safe_str_cmp
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
 
 # Our oauth
 from oauth import Oauth
@@ -12,35 +14,9 @@ NCTU_APP_REDIRECT_URI = 'http://127.0.0.1:5000/auth'
 NCTU_APP_CLIENT_ID = 'dFo3aTrp02yAzzHgaYNf90IUGe15ASgZfb6Wl2gb'
 NCTU_APP_CLIENT_SECRET = 'dV2NgLReGwmKyfBIGajbVAZCAr7puGyudu1ZianSaIMV441Lo4udlPXloItyQTCGN3aHapPDV4OzNfb91Z1Hfm1HSEQkK9yKLt3vwtUc7JczIeDB7Rfo3nVqVgEuDbTY'
 
-# JWT
-class User(object):
-    def __init__(self, id, usercode):
-        self.id = id
-        self.usercode = usercode
-
-    def __str__(self):
-        return "User(id='%s')" % self.id
-
-users = [
-    User(1, '7gTeaXHzIjjRi7UPHqygnBnORpr0hQ'),
-    User(2, '123')
-]
-
-usercode_table = {u.usercode: u for u in users}
-userid_table = {u.id: u for u in users}
-
-def authenticate(usercode):
-    user = usercode_table.get(usercode, None)
-    if user and safe_str_cmp(user.usercode.encode('utf-8'), usercode.encode('utf-8')):
-        return user
-
-def identity(payload):
-    user_id = payload['identity']
-    return userid_table.get(user_id, None)
-# JWT
 app = Flask(__name__)
 app.secret_key = 'your super coll secrey key'
-jwt = JWT(app, authenticate, identity)
+jwt = JWTManager(app)
 SQLITE_DB_PATH = 'songs.db'
 SQLITE_DB_SCHEMA = 'create_db.sql'
 MEMBER_CSV_PATH = 'songs.csv'
@@ -106,10 +82,33 @@ def auth():
 
     return redirect('/login')
 
-@app.route('/protected')
-@jwt_required()
+# Provide a method to create access tokens. The create_access_token()
+# function is used to actually generate the token, and you can return
+# it to the caller however you choose.
+@app.route('/jwtlogin', methods=['POST'])
+def jwtlogin():
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+
+    code = request.json.get('code', None)
+    if not code:
+        return jsonify({"msg": "Missing code parameter"}), 400
+
+    if code != 'test':
+        return jsonify({"msg": "Bad code"}), 401
+
+    # Identity can be any data that is json serializable
+    access_token = create_access_token(identity=code)
+    return jsonify(access_token=access_token), 200
+
+# Protect a view with jwt_required, which requires a valid access token
+# in the request to access.
+@app.route('/protected', methods=['GET'])
+@jwt_required
 def protected():
-    return '%s' % current_identity
+    # Access the identity of the current user with get_jwt_identity
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
 
 # SQLite3-related operations
 # See SQLite3 usage pattern from Flask official doc
