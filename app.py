@@ -8,6 +8,10 @@ from flask_jwt_extended import (
     jwt_optional,
     get_jwt_identity
 )
+from flask_cors import (
+    CORS,
+    cross_origin
+)
 
 # Our oauth
 from oauth import Oauth
@@ -45,6 +49,7 @@ def login():
     return nctu.authorize()
 
 @app.route('/vote', methods=['GET'])
+@cross_origin()
 @jwt_required
 def vote():
     # 先測 token, 再去問 oauth
@@ -66,9 +71,10 @@ def vote():
             (memberID, songID)
         )
         print('create new voting record', voting_result)
+        return jsonify('vote!'), 200
     else:
         print('you already vote: song', voting_result)
-
+        return jsonify('already vote!'), 200
     return redirect('/')
 
 @app.route('/auth')
