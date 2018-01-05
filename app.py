@@ -16,7 +16,7 @@ from flask_cors import (
 # Our oauth
 from oauth import Oauth
 OAUTH_URL = 'https://id.nctu.edu.tw'
-NCTU_APP_REDIRECT_URI = 'http://127.0.0.1:3000/'
+NCTU_APP_REDIRECT_URI = 'https://lichin.me/graduation_voting_frontend/'
 NCTU_APP_CLIENT_ID = 'dFo3aTrp02yAzzHgaYNf90IUGe15ASgZfb6Wl2gb'
 NCTU_APP_CLIENT_SECRET = 'dV2NgLReGwmKyfBIGajbVAZCAr7puGyudu1ZianSaIMV441Lo4udlPXloItyQTCGN3aHapPDV4OzNfb91Z1Hfm1HSEQkK9yKLt3vwtUc7JczIeDB7Rfo3nVqVgEuDbTY'
 
