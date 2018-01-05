@@ -16,12 +16,13 @@ from flask_cors import (
 # Our oauth
 from oauth import Oauth
 OAUTH_URL = 'https://id.nctu.edu.tw'
-NCTU_APP_REDIRECT_URI = 'http://127.0.0.1:5000/auth'
+NCTU_APP_REDIRECT_URI = 'http://127.0.0.1:3000/'
 NCTU_APP_CLIENT_ID = 'dFo3aTrp02yAzzHgaYNf90IUGe15ASgZfb6Wl2gb'
 NCTU_APP_CLIENT_SECRET = 'dV2NgLReGwmKyfBIGajbVAZCAr7puGyudu1ZianSaIMV441Lo4udlPXloItyQTCGN3aHapPDV4OzNfb91Z1Hfm1HSEQkK9yKLt3vwtUc7JczIeDB7Rfo3nVqVgEuDbTY'
 
 app = Flask(__name__)
 app.secret_key = 'your super coll secrey key'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False
 jwt = JWTManager(app)
 SQLITE_DB_PATH = 'songs.db'
 SQLITE_DB_SCHEMA = 'create_db.sql'
@@ -44,6 +45,7 @@ def home():
     return redirect('/login')
 
 @app.route('/login')
+@cross_origin()
 def login():
     # redirect to nctu auth dialog
     return nctu.authorize()
@@ -78,17 +80,21 @@ def vote():
     return redirect('/')
 
 @app.route('/auth')
+@cross_origin()
 def auth():
     # user code for getting token
     code = request.args.get('code')
+    print(code)
     if code:
         #get user token
+        print('decide')
         if nctu.get_token(code):
+            print(nctu.get_profile())
             profile = nctu.get_profile()
-            # Identity can be any data that is json serializable
             access_token = create_access_token(identity=profile)
-            url = 'http://127.0.0.1:3000/?code=' + code + '&accesstoken=' + access_token
-            return redirect(url)
+            # url = 'http://127.0.0.1:3000/?accesstoken=' + access_token
+            # return redirect(url)
+            return jsonify(access_token), 200
 
     return redirect('/login')
 

@@ -27,7 +27,10 @@ class Oauth(object):
             'client_secret': self.client_secret,
             'redirect_uri': self.redirect_uri
         }
-        access_token = requests.post(get_token_url, data=data).json().get('access_token', None)
+        print(data)
+        access_token = requests.post(get_token_url, data=data).json()
+        print(access_token)
+        access_token = access_token.get('access_token', None)
 
         if access_token:
             session['nctu_token'] = access_token
