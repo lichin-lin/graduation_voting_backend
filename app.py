@@ -125,6 +125,6 @@ def close_connection(exception):
         db.close()
 
 if __name__ == "__main__":
-    app.run(debug=1)
+    app.run(debug=1, host='0.0.0.0')
 
 # FLASK_APP=app.py flask run
