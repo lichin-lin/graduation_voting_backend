@@ -16,11 +16,11 @@ from flask_cors import (
 # Our oauth
 from oauth import Oauth
 OAUTH_URL = 'https://id.nctu.edu.tw'
-NCTU_APP_REDIRECT_URI = 'https://lichin.me/graduation_voting_frontend/'
+NCTU_APP_REDIRECT_URI = 'http://107songs.nctu.me/'
 NCTU_APP_CLIENT_ID = 'dFo3aTrp02yAzzHgaYNf90IUGe15ASgZfb6Wl2gb'
 NCTU_APP_CLIENT_SECRET = 'dV2NgLReGwmKyfBIGajbVAZCAr7puGyudu1ZianSaIMV441Lo4udlPXloItyQTCGN3aHapPDV4OzNfb91Z1Hfm1HSEQkK9yKLt3vwtUc7JczIeDB7Rfo3nVqVgEuDbTY'
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 app.secret_key = 'your super coll secrey key'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False
 jwt = JWTManager(app)
@@ -35,7 +35,7 @@ nctu = Oauth(
     client_secret=NCTU_APP_CLIENT_SECRET
 )
 
-@app.route("/")
+@app.route("/backend")
 def home():
     # check if login
     if session.get('logged_in'):
@@ -94,7 +94,7 @@ def auth():
             access_token = create_access_token(identity=profile)
             # url = 'http://127.0.0.1:3000/?accesstoken=' + access_token
             # return redirect(url)
-            return jsonify(access_token), 200
+            return jsonify(access_token, profile), 200
 
     return redirect('/login')
 
