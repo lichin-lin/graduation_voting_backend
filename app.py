@@ -93,8 +93,8 @@ def auth():
         #get user token
         print('decide')
         if nctu.get_token(code):
-            writeLog('auth success' + nctu.get_profile())
-            print(nctu.get_profile())
+            # writeLog('auth success' + nctu.get_profile().get('Age'))
+            print(nctu.get_profile(), 'user: ', nctu.get_profile().get('Age'))
             profile = nctu.get_profile()
             access_token = create_access_token(identity=profile)
             # url = 'http://127.0.0.1:3000/?accesstoken=' + access_token
