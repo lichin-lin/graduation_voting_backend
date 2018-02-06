@@ -74,11 +74,11 @@ def vote():
             'INSERT INTO  voting_record (memberid, songid) VALUES (?, ?)',
             (memberID, songID)
         )
-        writeLog('create new voting record', voting_result)
+        # writeLog('create new voting record', voting_result)
         print('create new voting record', voting_result)
         return jsonify('vote!'), 200
     else:
-        writeLog('you already vote: song', voting_result)
+        # writeLog('you already vote: song', voting_result)
         print('you already vote: song', voting_result)
         return jsonify('already vote!'), 200
     return redirect('/')
