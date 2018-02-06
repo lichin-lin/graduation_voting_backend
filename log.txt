@@ -1,6 +1,2 @@
- * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: 347-316-850
-127.0.0.1 - - [10/Jan/2018 10:49:41] "GET /auth?code=VAhiiVKe4wgTP6yIk9rVIRe0hNi9yc HTTP/1.0" 200 -
-127.0.0.1 - - [10/Jan/2018 10:49:41] "GET /vote?songid=1 HTTP/1.0" 200 -
+[logFile]
+[2018-02-06 17:11:21.717882] not login user try to login

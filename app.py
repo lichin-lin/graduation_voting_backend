@@ -2,6 +2,7 @@
 import csv
 import sqlite3
 import requests
+from datetime import datetime
 from flask import Flask, session, request, redirect, jsonify, g
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
@@ -41,7 +42,7 @@ def home():
     if session.get('logged_in'):
         # get user profile
         return jsonify(nctu.get_profile())
-
+    writeLog('not login user try to login')
     return redirect('/login')
 
 @app.route('/login')
@@ -72,9 +73,11 @@ def vote():
             'INSERT INTO  voting_record (memberid, songid) VALUES (?, ?)',
             (memberID, songID)
         )
+        writeLog('create new voting record', voting_result)
         print('create new voting record', voting_result)
         return jsonify('vote!'), 200
     else:
+        writeLog('you already vote: song', voting_result)
         print('you already vote: song', voting_result)
         return jsonify('already vote!'), 200
     return redirect('/')
@@ -89,6 +92,7 @@ def auth():
         #get user token
         print('decide')
         if nctu.get_token(code):
+            writeLog('auth success' + nctu.get_profile())
             print(nctu.get_profile())
             profile = nctu.get_profile()
             access_token = create_access_token(identity=profile)
@@ -123,6 +127,13 @@ def close_connection(exception):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
+
+def writeLog(text):
+    printText = '[' + str(datetime.now()) + '] ' + text + '\n'
+    print(printText)
+    f = open('log.txt', 'a')
+    f.write(printText)
+    f.close()
 
 if __name__ == "__main__":
     app.run(debug=1, host='0.0.0.0')
