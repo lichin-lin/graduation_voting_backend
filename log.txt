@@ -1,2 +1,5 @@
 [logFile]
 [2018-02-06 17:11:21.717882] not login user try to login
+[2018-02-06 09:34:13.256191] you already vote: song- user:316005vote song: 2
+[2018-02-06 09:35:08.907578] auth success0316005
+[2018-02-06 09:35:18.114351] you already vote: song- user:316005vote song: 2
