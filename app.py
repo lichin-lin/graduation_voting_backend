@@ -74,11 +74,11 @@ def vote():
             'INSERT INTO  voting_record (memberid, songid) VALUES (?, ?)',
             (memberID, songID)
         )
-        # writeLog('create new voting record', voting_result)
+        writeLog('create new voting record- user:' + voting_result[0] + 'vote song: ' + voting_result[1])
         print('create new voting record', voting_result)
         return jsonify('vote!'), 200
     else:
-        # writeLog('you already vote: song', voting_result)
+        writeLog('you already vote: song- user:' + voting_result[0] + 'vote song: ' + voting_result[1])
         print('you already vote: song', voting_result)
         return jsonify('already vote!'), 200
     return redirect('/')
@@ -93,7 +93,7 @@ def auth():
         #get user token
         print('decide')
         if nctu.get_token(code):
-            # writeLog('auth success' + nctu.get_profile().get('Age'))
+            writeLog('auth success' + nctu.get_profile().get('username'))
             print(nctu.get_profile(), 'user: ', nctu.get_profile().get('Age'))
             profile = nctu.get_profile()
             access_token = create_access_token(identity=profile)
