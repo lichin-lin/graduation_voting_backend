@@ -58,6 +58,7 @@ def vote():
     # 先測 token, 再去問 oauth
     current_user = get_jwt_identity()
     # 再測一下 id
+    print('current_user: ', current_user)
     songID = request.args.get('songid')
     memberID = current_user['username']
 
