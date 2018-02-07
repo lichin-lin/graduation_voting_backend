@@ -36,6 +36,17 @@ nctu = Oauth(
     client_secret=NCTU_APP_CLIENT_SECRET
 )
 
+@app.route("/analytics")
+def analytics():
+    db = get_db()
+
+    db.row_factory = dict_factory
+    cursor = db.cursor()
+    cursor.execute('SELECT songid, count(songid) FROM voting_record GROUP BY songid')
+    results = cursor.fetchall()
+    print (results)
+    return results
+
 @app.route("/backend")
 def home():
     # check if login
@@ -135,6 +146,12 @@ def writeLog(text):
     f = open('log.txt', 'a')
     f.write(printText)
     f.close()
+
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
 
 if __name__ == "__main__":
     app.run(debug=1, host='0.0.0.0')
