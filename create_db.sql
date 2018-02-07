@@ -2,8 +2,6 @@ CREATE TABLE songs (
     id INTEGER PRIMARY KEY ASC AUTOINCREMENT,
     title TEXT NOT NULL,
     group_name TEXT NOT NULL,
-    lyrics TEXT,
-    about TEXT,
     link TEXT
 );
 
