@@ -47,7 +47,6 @@ def home():
 
 @app.route("/analytics")
 def analytics():
-    print('analytics data')
     db = get_db()
 
     db.row_factory = dict_factory
@@ -55,7 +54,7 @@ def analytics():
     cursor.execute('SELECT songid, count(songid) FROM voting_record GROUP BY songid')
     results = cursor.fetchall()
     print (results)
-    return results
+    return jsonify(results)
 
 @app.route('/login')
 @cross_origin()
