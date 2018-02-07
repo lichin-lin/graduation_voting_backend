@@ -4,7 +4,7 @@ import sqlite3
 with open('./songs.csv', newline='') as f:
     csv_reader = csv.DictReader(f)
     songs = [
-        (row['曲名'], row['團體名'])
+        (row['曲名'], row['團體名'], row['連結'])
         for row in csv_reader
     ]
     print(songs)
@@ -18,7 +18,7 @@ with db:
 
 with db:
     db.executemany(
-        'INSERT INTO  songs (title, group_name) VALUES (?, ?)',
+        'INSERT INTO  songs (title, group_name, link) VALUES (?, ?, ?)',
         songs
     )
 
