@@ -36,17 +36,6 @@ nctu = Oauth(
     client_secret=NCTU_APP_CLIENT_SECRET
 )
 
-@app.route("/analytics")
-def analytics():
-    db = get_db()
-
-    db.row_factory = dict_factory
-    cursor = db.cursor()
-    cursor.execute('SELECT songid, count(songid) FROM voting_record GROUP BY songid')
-    results = cursor.fetchall()
-    print (results)
-    return results
-
 @app.route("/backend")
 def home():
     # check if login
@@ -55,6 +44,18 @@ def home():
         return jsonify(nctu.get_profile())
     writeLog('not login user try to login')
     return redirect('/login')
+
+@app.route("/analytics")
+def analytics():
+    print('analytics data')
+    db = get_db()
+
+    db.row_factory = dict_factory
+    cursor = db.cursor()
+    cursor.execute('SELECT songid, count(songid) FROM voting_record GROUP BY songid')
+    results = cursor.fetchall()
+    print (results)
+    return results
 
 @app.route('/login')
 @cross_origin()
