@@ -45,7 +45,8 @@ def home():
     writeLog('not login user try to login')
     return redirect('/login')
 
-@app.route("/analytics")
+@app.route('/analytics', methods=['GET'])
+@cross_origin()
 def analytics():
     db = get_db()
 
