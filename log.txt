@@ -1258,3 +1258,24 @@
 [2018-02-13 05:52:53.291233] auth success0311530
 [2018-02-13 05:52:56.525829] create new voting record- user:0311530vote song: 3
 [2018-02-13 06:37:52.088335] auth success0311525
+[2018-02-13 14:38:07.817362] auth success0552218
+[2018-02-13 14:39:24.315604] create new voting record- user:0552218vote song: 1
+[2018-02-14 04:02:04.458195] auth success0312135
+[2018-02-14 04:02:10.237364] create new voting record- user:0312135vote song: 3
+[2018-02-14 04:51:55.139133] auth success0313250
+[2018-02-14 04:52:15.053881] create new voting record- user:0313250vote song: 3
+[2018-02-15 01:17:08.895724] auth success0419007
+[2018-02-15 01:17:16.884655] auth success0419007
+[2018-02-15 01:17:19.377030] create new voting record- user:0419007vote song: 1
+[2018-02-15 03:20:47.197766] auth success0319047
+[2018-02-15 03:20:54.865178] auth success0319047
+[2018-02-15 04:57:35.247250] auth success0319009
+[2018-02-15 04:58:46.908745] create new voting record- user:0319009vote song: 1
+[2018-02-15 06:58:56.449622] auth success0413238
+[2018-02-15 06:59:00.623386] create new voting record- user:0413238vote song: 3
+[2018-02-15 07:01:06.096485] auth success0413238
+[2018-02-15 14:22:41.965564] auth success0516033
+[2018-02-15 14:22:45.548849] create new voting record- user:0516033vote song: 1
+[2018-02-15 23:58:56.583716] you already vote: song- user:311602vote song: 1
+[2018-02-16 08:53:02.646894] auth success0311613
+[2018-02-21 17:05:30.948850] auth success0313454
